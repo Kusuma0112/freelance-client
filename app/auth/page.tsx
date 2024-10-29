@@ -36,14 +36,20 @@ function PhoneForm() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(values),
-      })
+      })       
       const data = await response.json()
+      if (response.ok){
+
+      console.log(data.ok);
       
      if (data.isNewUser) {
         router.push(`/auth/create-account?phone=${values.phoneNumber}`)
       } else {
         router.push(`/auth/verify?phone=${values.phoneNumber}`)
       }
+    }  else { setError(data.message)}
+
+
     } catch (error) {
       console.error('Error:', error)
       setError("An error occurred. Please try again.");

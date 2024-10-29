@@ -29,7 +29,6 @@ export default function CreateAccountPage() {
   const searchParams = useSearchParams()
   const num = searchParams.get('phone') || '';
   const phone = num.trim();
-  console.log("number", num, phone);
   
   // Default to an empty string if phone is null
 
