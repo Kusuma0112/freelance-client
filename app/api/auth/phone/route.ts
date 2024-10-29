@@ -22,9 +22,12 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'Invalid phone number' }, { status: 400 });
   }
 
+  console.log(phoneNumber);
+  const formattedPhone = phoneNumber.replace('+','');
+
     try{
       await dbConnect();
-  const existingUser = await User.findOne({ 'phoneNo.value': phoneNumber }).exec()
+  const existingUser = await User.findOne({ 'phoneNo.value': formattedPhone }).exec()
   //userexist = true orelse exist not user = null
   console.log(existingUser);
       //if  user exist then send otp to user
