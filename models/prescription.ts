@@ -1,6 +1,9 @@
 import mongoose, { Document, Schema } from "mongoose";
 
 export interface IPrescription extends Document {
+  prescriptionId: string;
+  userId: string;
+  doctorId: string;
   name: string;
   age: number;
   specialization: string;
@@ -11,6 +14,18 @@ export interface IPrescription extends Document {
 }
 
 const PrescriptionSchema: Schema<IPrescription> = new mongoose.Schema({
+  prescriptionId: {
+    type: String,
+    required: true,
+  },
+  userId: {
+    type: String,
+    required: true,
+  },
+  doctorId: {
+    type: String,
+    required: true,
+  },
   name: {
     type: String,
     required: true,
