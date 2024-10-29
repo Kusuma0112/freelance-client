@@ -28,16 +28,28 @@ export async function POST(req: Request) {
     const body = await req.json();
     const result = createAccountSchema.safeParse(body);
 
+    console.log("body",result);
+    
+
     if (!result.success) {
       return NextResponse.json({ error: result.error.errors }, { status: 400 });
     }
 
+    console.log("result.success");
+    
+
     const { email, firstName, lastName, password, phone, otp } = result.data;
+
+    const formattedPhone = `+${phone}`; 
+
+    console.log(formattedPhone);
+    console.log("Using verifyServiceSid:", verifyServiceSid);
+
 
     // Verify OTP
     const verification = await client.verify.v2
       .services(verifyServiceSid!)
-      .verificationChecks.create({ to: phone, code: otp });
+      .verificationChecks.create({ to: formattedPhone, code: otp });
 
     if (verification.status !== 'approved') {
       return NextResponse.json({ error: 'Invalid OTP' }, { status: 400 });

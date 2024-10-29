@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 
+// Validation schema for OTP
 const otpSchema = z.object({
   otp: z.string().length(6, 'OTP must be 6 digits'),
 })
@@ -32,16 +33,21 @@ export default function VerifyPage() {
       const response = await fetch('/api/auth/verify', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...values, phone }),
+        body: JSON.stringify({ phoneNumber: phone?.trim(), otp: values.otp }), // Correctly format request body
       })
       const data = await response.json()
+
       if (data.success) {
-        router.push('/dashboard')
+        // Handle successful verification
+        router.push('') // Redirect to the home page or another route
       } else {
-        form.setError('otp', { message: 'Invalid OTP' })
+        // Show error if OTP is invalid
+        form.setError('otp', { message: data.error || 'Invalid OTP' })
       }
     } catch (error) {
       console.error('Error:', error)
+      // Optionally set a form error here for network issues
+      form.setError('otp', { message: 'An error occurred. Please try again later.' })
     } finally {
       setIsLoading(false)
     }
